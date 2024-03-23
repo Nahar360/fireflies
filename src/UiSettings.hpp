@@ -1,6 +1,8 @@
 #ifndef UI_SETTINGS_HPP
 #define UI_SETTINGS_HPP
 
+namespace UiSettings
+{
 extern int NUM_FIREFLIES;
 
 extern float FIREFLIES_RADIUS;
@@ -17,5 +19,6 @@ extern int SHOW_LINES_OPTION;
 extern bool SHOW_INFLUENCE_RADIUS;
 
 extern float BLINKING_DURATION;
+} // namespace UiSettings
 
 #endif // UI_SETTINGS_HPP

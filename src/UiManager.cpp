@@ -9,7 +9,6 @@
 #include "imgui.h"
 #include "UiSettings.hpp"
 
-
 void CUiManager::Init(sf::RenderWindow& window)
 {
     ImGui::SFML::Init(window);
@@ -113,9 +112,9 @@ void CUiManager::Render(sf::RenderWindow& window)
 
 void CUiManager::UpdateWindowTitle(sf::RenderWindow& window)
 {
-    if (ImGui::InputText("Window title", WINDOW_TITLE, 255))
+    if (ImGui::InputText("Window title", GlobalSettings::WINDOW_TITLE, 255))
     {
-        window.setTitle(WINDOW_TITLE);
+        window.setTitle(GlobalSettings::WINDOW_TITLE);
     }
 }
 
@@ -126,8 +125,9 @@ void CUiManager::ShowFPS(float fps)
 
 void CUiManager::UpdateMousePosition(sf::RenderWindow& window)
 {
-    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-    if (mousePos.x >= 0 && mousePos.x <= WINDOW_WIDTH && mousePos.y >= 0 && mousePos.y <= WINDOW_HEIGHT)
+    const sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    if (mousePos.x >= 0 && mousePos.x <= GlobalSettings::WINDOW_WIDTH && mousePos.y >= 0 &&
+        mousePos.y <= GlobalSettings::WINDOW_HEIGHT)
     {
         ImGui::Text("Mouse position: (%d, %d)", mousePos.x, mousePos.y);
     }
@@ -139,15 +139,15 @@ void CUiManager::UpdateMousePosition(sf::RenderWindow& window)
 
 void CUiManager::InitialiseNetwork(CNetwork& network)
 {
-    ImGui::InputInt("No. of fireflies", &NUM_FIREFLIES);
+    ImGui::InputInt("No. of fireflies", &UiSettings::NUM_FIREFLIES);
 
-    ImGui::InputFloat("Fireflies radius", &FIREFLIES_RADIUS, 0.001f, 0.001f, "%.2f");
+    ImGui::InputFloat("Fireflies radius", &UiSettings::FIREFLIES_RADIUS, 0.001f, 0.001f, "%.2f");
 
-    ImGui::InputFloat("Influence radius", &INFLUENCE_RADIUS, 0.001f, 0.001f, "%.2f");
+    ImGui::InputFloat("Influence radius", &UiSettings::INFLUENCE_RADIUS, 0.001f, 0.001f, "%.2f");
 
-    ImGui::InputFloat("Min. blinking rate", &MIN_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
+    ImGui::InputFloat("Min. blinking rate", &UiSettings::MIN_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
 
-    ImGui::InputFloat("Max. blinking rate", &MAX_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
+    ImGui::InputFloat("Max. blinking rate", &UiSettings::MAX_BLINKING_RATE, 0.001f, 0.001f, "%.2f");
 
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.4f, 0.1f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
@@ -160,22 +160,22 @@ void CUiManager::InitialiseNetwork(CNetwork& network)
 
 void CUiManager::UpdateBackgroundColor()
 {
-    if (ImGui::ColorEdit3("Background color", BACKGROUND_COLOR_INPUT))
+    if (ImGui::ColorEdit3("Background color", GlobalSettings::BACKGROUND_COLOR_INPUT))
     {
-        BACKGROUND_COLOR.r = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[0] * 255.f);
-        BACKGROUND_COLOR.g = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[1] * 255.f);
-        BACKGROUND_COLOR.b = static_cast<sf::Uint8>(BACKGROUND_COLOR_INPUT[2] * 255.f);
+        GlobalSettings::BACKGROUND_COLOR.r = static_cast<sf::Uint8>(GlobalSettings::BACKGROUND_COLOR_INPUT[0] * 255.f);
+        GlobalSettings::BACKGROUND_COLOR.g = static_cast<sf::Uint8>(GlobalSettings::BACKGROUND_COLOR_INPUT[1] * 255.f);
+        GlobalSettings::BACKGROUND_COLOR.b = static_cast<sf::Uint8>(GlobalSettings::BACKGROUND_COLOR_INPUT[2] * 255.f);
     }
 }
 
 void CUiManager::UpdateFirefliesColor(CNetwork& network)
 {
-    if (ImGui::ColorEdit3("Fireflies color", FIREFLIES_COLOR_INPUT))
+    if (ImGui::ColorEdit3("Fireflies color", UiSettings::FIREFLIES_COLOR_INPUT))
     {
         sf::Color firefliesColor;
-        firefliesColor.r = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[0] * 255.f);
-        firefliesColor.g = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[1] * 255.f);
-        firefliesColor.b = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[2] * 255.f);
+        firefliesColor.r = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[0] * 255.f);
+        firefliesColor.g = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[1] * 255.f);
+        firefliesColor.b = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[2] * 255.f);
 
         network.UpdateFirefliesColor(firefliesColor);
     }
@@ -183,17 +183,21 @@ void CUiManager::UpdateFirefliesColor(CNetwork& network)
 
 void CUiManager::UpdateShowLines(CNetwork& network)
 {
-    ImGui::Combo("Show Lines", &SHOW_LINES_OPTION, SHOW_LINES_OPTIONS, IM_ARRAYSIZE(SHOW_LINES_OPTIONS));
+    ImGui::Combo(
+        "Show Lines",
+        &UiSettings::SHOW_LINES_OPTION,
+        UiSettings::SHOW_LINES_OPTIONS,
+        IM_ARRAYSIZE(UiSettings::SHOW_LINES_OPTIONS));
 }
 
 void CUiManager::UpdateShowInfluenceRadius(CNetwork& network)
 {
-    ImGui::Checkbox("Show Influence Radius", &SHOW_INFLUENCE_RADIUS);
+    ImGui::Checkbox("Show Influence Radius", &UiSettings::SHOW_INFLUENCE_RADIUS);
 }
 
 void CUiManager::UpdateBlinkingDuration(CNetwork& network)
 {
-    ImGui::InputFloat("Blinking duration (s)", &BLINKING_DURATION, 0.001f, 0.001f, "%.2f");
+    ImGui::InputFloat("Blinking duration (s)", &UiSettings::BLINKING_DURATION, 0.001f, 0.001f, "%.2f");
 }
 
 void CUiManager::ResetBlinkingClock(CNetwork& network)
@@ -291,7 +295,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 
             ImGui::Text("Neighbours: [");
             ImGui::SameLine();
-            std::vector<int> neighbours = firefly.GetNeighbours();
+            const std::vector<int> neighbours = firefly.GetNeighbours();
             for (size_t j = 0; j < neighbours.size(); j++)
             {
                 if (j != neighbours.size() - 1)
@@ -309,17 +313,17 @@ void CUiManager::ListFireflies(CNetwork& network)
         }
 
         // Phase real time plot
-        // char overlay[32];
-        // sprintf_s(overlay, "phase %0.1f", firefly.GetPhase());
-        // ImGui::PlotLines(
-        //     "",
-        //     firefly.GetPhasesToPlot().data(),
-        //     firefly.GetPhasesToPlot().size(),
-        //     firefly.GetPhasesOffset(),
-        //     overlay,
-        //     0.0f,
-        //     firefly.GetBlinkingRate(),
-        //     ImVec2(250.0f, 50.0f));
+        char overlay[32];
+        // sprintf_s(overlay, "phase %0.1f", firefly.GetPhase()); // // TODO: sprintf_s does not work on MacOS
+        ImGui::PlotLines(
+            "",
+            firefly.GetPhasesToPlot().data(),
+            firefly.GetPhasesToPlot().size(),
+            firefly.GetPhasesOffset(),
+            overlay,
+            0.0f,
+            firefly.GetBlinkingRate(),
+            ImVec2(250.0f, 50.0f));
 
         ImGui::Separator();
     }

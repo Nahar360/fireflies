@@ -5,7 +5,6 @@
 
 #include "Firefly.hpp"
 
-
 class CNetwork
 {
 public:

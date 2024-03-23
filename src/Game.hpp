@@ -6,7 +6,6 @@
 #include "Network.hpp"
 #include "UiManager.hpp"
 
-
 class CGame
 {
 public:

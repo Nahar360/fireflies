@@ -11,16 +11,16 @@ CFirefly::CFirefly(int id) : m_id(id), m_closestFirefly(-1)
 void CFirefly::Init(float posX, float posY)
 {
     // Firefly
-    m_firefly.setRadius(FIREFLIES_RADIUS);
+    m_firefly.setRadius(UiSettings::FIREFLIES_RADIUS);
     m_firefly.setPointCount(6);
 
-    m_originalColor.r = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[0] * 255.f);
-    m_originalColor.g = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[1] * 255.f);
-    m_originalColor.b = static_cast<sf::Uint8>(FIREFLIES_COLOR_INPUT[2] * 255.f);
+    m_originalColor.r = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[0] * 255.f);
+    m_originalColor.g = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[1] * 255.f);
+    m_originalColor.b = static_cast<sf::Uint8>(UiSettings::FIREFLIES_COLOR_INPUT[2] * 255.f);
     m_firefly.setFillColor(m_originalColor);
 
     m_firefly.setOutlineThickness(2.5f);
-    sf::Color decoColor = sf::Color(
+    const sf::Color decoColor = sf::Color(
         static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
         static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
         static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5));
@@ -61,7 +61,7 @@ void CFirefly::Init(float posX, float posY)
     SetVertices(m_firefly.getPosition());
 
     // Influence radius
-    m_influenceRadius.setRadius(INFLUENCE_RADIUS);
+    m_influenceRadius.setRadius(UiSettings::INFLUENCE_RADIUS);
     m_influenceRadius.setFillColor(sf::Color::Transparent);
     m_influenceRadius.setOutlineThickness(1.5f);
     m_influenceRadius.setOutlineColor(decoColor);
@@ -125,7 +125,7 @@ void CFirefly::Draw(sf::RenderWindow& window)
         }
     }
 
-    if (SHOW_INFLUENCE_RADIUS)
+    if (UiSettings::SHOW_INFLUENCE_RADIUS)
     {
         window.draw(m_influenceRadius);
     }
@@ -136,9 +136,9 @@ void CFirefly::Draw(sf::RenderWindow& window)
 
 void CFirefly::RunPhaseFunction()
 {
-    float m_currentTime = m_clock.getElapsedTime().asSeconds();
-    m_phase += m_currentTime - m_previousTime;
-    m_previousTime = m_currentTime;
+    float currentTime = m_clock.getElapsedTime().asSeconds();
+    m_phase += currentTime - m_previousTime;
+    m_previousTime = currentTime;
 
     m_phasesToPlot[m_phasesOffset] = m_phase;
     m_phasesOffset = (m_phasesOffset + 1) % m_phasesToPlot.size();
@@ -154,10 +154,10 @@ bool CFirefly::HasBlinked()
         m_center.setFillColor(sf::Color::Black);
 
         // Back to original color
-        if (m_phase > m_blinkingRate + BLINKING_DURATION)
+        if (m_phase > m_blinkingRate + UiSettings::BLINKING_DURATION)
         {
             m_firefly.setFillColor(m_originalColor);
-            sf::Color decoColor = sf::Color(
+            const sf::Color decoColor = sf::Color(
                 static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
                 static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
                 static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5));
@@ -177,34 +177,11 @@ bool CFirefly::HasBlinked()
     return false;
 }
 
-// Alex's HasBlinked
-/*bool CFirefly::HasBlinked()
-{
-        if (m_phase > m_blinkingRate - BLINKING_DURATION)
-        {
-                m_firefly.setFillColor(sf::Color::Yellow);
-                m_firefly.setOutlineColor(sf::Color::Black);
-                m_center.setFillColor(sf::Color::Black);
-
-                if (m_phase > m_blinkingRate)
-                {
-                        m_firefly.setFillColor(m_originalColor);
-                        sf::Color decoColor = sf::Color(m_firefly.getFillColor().r * 0.5, m_firefly.getFillColor().g *
-0.5, m_firefly.getFillColor().b * 0.5); m_firefly.setOutlineColor(decoColor); m_center.setFillColor(decoColor);
-
-                        m_phase = m_blinkingRate - m_phase;
-                        return false;
-                }
-                return true;
-        }
-        return false;
-}*/
-
 void CFirefly::UpdatePosition(float x, float y)
 {
     // Boundaries detection
-    if (x >= 0 + m_firefly.getRadius() && x <= WINDOW_WIDTH - m_firefly.getRadius() && y >= 0 + m_firefly.getRadius() &&
-        y <= WINDOW_HEIGHT - m_firefly.getRadius())
+    if (x >= 0 + m_firefly.getRadius() && x <= GlobalSettings::WINDOW_WIDTH - m_firefly.getRadius() &&
+        y >= 0 + m_firefly.getRadius() && y <= GlobalSettings::WINDOW_HEIGHT - m_firefly.getRadius())
     {
         m_firefly.setPosition(x, y);
 
@@ -234,7 +211,7 @@ void CFirefly::UpdateColor(sf::Color color)
 
     m_firefly.setFillColor(m_originalColor);
 
-    sf::Color decoColor = sf::Color(
+    const sf::Color decoColor = sf::Color(
         static_cast<sf::Uint8>(m_firefly.getFillColor().r * 0.5),
         static_cast<sf::Uint8>(m_firefly.getFillColor().g * 0.5),
         static_cast<sf::Uint8>(m_firefly.getFillColor().b * 0.5));
@@ -251,7 +228,7 @@ void CFirefly::UpdateColor(sf::Color color)
 
 bool CFirefly::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos)
 {
-    sf::Vector2f mousePosFloat = sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+    const sf::Vector2f mousePosFloat = sf::Vector2f(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
     if (m_firefly.getGlobalBounds().contains(mousePosFloat))
     {
         switch (mouseButton)

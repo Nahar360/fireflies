@@ -5,19 +5,20 @@
 
 #include "UiSettings.hpp"
 
-
 void CNetwork::Init()
 {
     m_fireflies.clear();
 
-    for (int i = 0; i < NUM_FIREFLIES; i++)
+    for (int i = 0; i < UiSettings::NUM_FIREFLIES; i++)
     {
         CFirefly firefly(i + 1);
         firefly.Init();
 
         const float blinkingRate =
-            MIN_BLINKING_RATE + static_cast<float>(rand()) /
-                                    (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE))); // 2.2f
+            UiSettings::MIN_BLINKING_RATE +
+            static_cast<float>(rand()) /
+                (static_cast<float>(
+                    RAND_MAX / (UiSettings::MAX_BLINKING_RATE - UiSettings::MIN_BLINKING_RATE))); // 2.2f
         firefly.SetBlinkingRate(blinkingRate);
 
         m_fireflies.push_back(firefly);
@@ -54,20 +55,20 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
     for (size_t i = 0; i < neighbours.size(); i++)
     {
         std::cout << "Neighbour " << GetFirefly(neighbours[i]).GetId() << std::endl;
-        auto neighbour = GetFirefly(neighbours[i]);
+        const auto neighbour = GetFirefly(neighbours[i]);
 
         float phase = neighbour.GetPhase();
 
-        const float bDissipationFactor = BLINKING_DURATION;
+        const float bDissipationFactor = UiSettings::BLINKING_DURATION;
         const float eAmplitudeIncrement = 0.1f;
-        float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
-        float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
+        const float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
+        const float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
         float phaseRespondCurve = 1;
         if (alpha * phase + beta < 1)
         {
             phaseRespondCurve = alpha * phase + beta;
         }
-        float deltaPhase = phaseRespondCurve;
+        const float deltaPhase = phaseRespondCurve;
         phase += deltaPhase;
 
         std::cout << "New phase: " << phase << std::endl;
@@ -89,23 +90,6 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 
     std::cout << std::endl << std::endl;
 }
-
-// Alex's TransmitPulse
-/*void CNetwork::TransmitPulse(CFirefly& firefly)
-{
-        std::vector<int> neighbours = firefly.GetNeighbours();
-        for (size_t i = 0; i < neighbours.size(); i++)
-        {
-                CFirefly& neighbour = GetFirefly(neighbours[i]);
-                float phase = neighbour.GetPhase();
-
-                phase += 0.01f;
-                phase = std::min(phase, firefly.GetBlinkingRate());
-                neighbour.SetPhase(phase);
-        }
-
-        std::cout << std::endl << std::endl;
-}*/
 
 void CNetwork::Scan()
 {
@@ -155,7 +139,7 @@ void CNetwork::Scan()
 
 void CNetwork::ShowLines(sf::RenderWindow& window)
 {
-    if (m_fireflies.size() > 1 && SHOW_LINES_OPTION != 0)
+    if (m_fireflies.size() > 1 && UiSettings::SHOW_LINES_OPTION != 0)
     {
         std::vector<sf::Vertex> lines;
         for (size_t i = 0; i < m_fireflies.size(); i++)
@@ -174,7 +158,7 @@ void CNetwork::ShowLines(sf::RenderWindow& window)
                         sf::Vector2f(m_fireflies[j].GetPosition().x, m_fireflies[j].GetPosition().y),
                         sf::Color::Green));
                 }
-                else if (SHOW_LINES_OPTION == 1)
+                else if (UiSettings::SHOW_LINES_OPTION == 1)
                 {
                     lines.push_back(sf::Vertex(
                         sf::Vector2f(m_fireflies[i].GetPosition().x, m_fireflies[i].GetPosition().y), sf::Color::Red));
@@ -213,8 +197,9 @@ void CNetwork::CreateFirefly()
     firefly.Init(75.0f, 75.0f); // default position, top left corner
 
     float blinkingRate =
-        MIN_BLINKING_RATE +
-        static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (MAX_BLINKING_RATE - MIN_BLINKING_RATE))); // 1.0f
+        UiSettings::MIN_BLINKING_RATE +
+        static_cast<float>(rand()) /
+            (static_cast<float>(RAND_MAX / (UiSettings::MAX_BLINKING_RATE - UiSettings::MIN_BLINKING_RATE))); // 1.0f
     firefly.SetBlinkingRate(blinkingRate);
 
     m_fireflies.push_back(firefly);

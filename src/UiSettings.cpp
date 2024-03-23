@@ -1,5 +1,7 @@
 #include "UiSettings.hpp"
 
+namespace UiSettings
+{
 int NUM_FIREFLIES = 2;
 
 float FIREFLIES_RADIUS = 50.0f;
@@ -17,3 +19,4 @@ bool SHOW_INFLUENCE_RADIUS = true;
 bool SHOW_VERTICES = false;
 
 float BLINKING_DURATION = 0.1f;
+} // namespace UiSettings
