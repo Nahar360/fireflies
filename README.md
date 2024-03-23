@@ -1,15 +1,14 @@
-This is the source code for the [Using CMake and managing dependencies](https://edw.is/using-cmake/).
+Forked from https://github.com/eliasdaler/cmake-fetchcontent-tutorial-code.
 
-It shows how to setup a simple project which depends on SFML, Dear ImGui and ImGui-SFML.
+'Fireflies' project developed with `SFML`, `imgui` and `imgui-sfml`.
 
-![image](https://user-images.githubusercontent.com/1285136/119359595-76e74280-bcb2-11eb-9ad5-1e69795e5696.png)
-
-# Building
+# Building and running
 
 ```sh
-git clone https://github.com/eliasdaler/cmake-fetchcontent-tutorial-code
-mkdir build && cd build
-cmake ../cmake-fetchcontent-tutorial-code
-cmake --build .
-./src/example_exe # or ./src/Debug/example_exe if using Visual Studio
+cd fireflies
+cmake -S . -B build
+cmake --build build
+./build/src/fireflies
 ```
+
+Alternatively, you can build and run 'Fireflies' using Visual Studio Code with the launch configuration provided.
