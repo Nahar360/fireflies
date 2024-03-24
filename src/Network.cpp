@@ -51,7 +51,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
     std::cout << "Transmitting pulse of firefly " << firefly.GetId() << " to: " << std::endl;
 
     // Get neighbours of firefly that has blinked
-    std::vector<int> neighbours = firefly.GetNeighbours();
+    const std::vector<int> neighbours = firefly.GetNeighbours();
     for (size_t i = 0; i < neighbours.size(); i++)
     {
         std::cout << "Neighbour " << GetFirefly(neighbours[i]).GetId() << std::endl;
