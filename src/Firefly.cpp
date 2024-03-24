@@ -165,6 +165,7 @@ bool CFirefly::HasBlinked()
             m_center.setFillColor(decoColor);
 
             m_phase = 0.0f;
+            
             // m_clock.restart();
 
             // TODO:
@@ -325,16 +326,6 @@ float CFirefly::GetElapsedTimeAsSeconds() const
     return m_clock.getElapsedTime().asSeconds();
 }
 
-void CFirefly::SetUrgeToBlink(const float urgeToBlink)
-{
-    m_urgeToBlink = urgeToBlink;
-}
-
-float CFirefly::GetUrgeToBlink() const
-{
-    return m_urgeToBlink;
-}
-
 void CFirefly::SetPhase(const float phase)
 {
     m_phase = phase;
@@ -343,6 +334,16 @@ void CFirefly::SetPhase(const float phase)
 float CFirefly::GetPhase() const
 {
     return m_phase;
+}
+
+std::vector<float> CFirefly::GetPhasesToPlot() const
+{
+    return m_phasesToPlot;
+}
+
+int CFirefly::GetPhasesOffset() const
+{
+    return m_phasesOffset;
 }
 
 void CFirefly::ResetBlinking()

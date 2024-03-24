@@ -55,7 +55,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
     for (size_t i = 0; i < neighbours.size(); i++)
     {
         std::cout << "Neighbour " << GetFirefly(neighbours[i]).GetId() << std::endl;
-        const auto neighbour = GetFirefly(neighbours[i]);
+        auto neighbour = GetFirefly(neighbours[i]);
 
         float phase = neighbour.GetPhase();
 
@@ -76,16 +76,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
         // TODO:
         // This does not work
         // but it should!!
-        // neighbour.SetPhase(phase);
-
-        // Quick fix for this last thing...
-        for (size_t j = 0; j < m_fireflies.size(); j++)
-        {
-            if (j + 1 == neighbour.GetId())
-            {
-                m_fireflies[j].SetUrgeToBlink(phase + phase * 0.1f);
-            }
-        }
+        neighbour.SetPhase(phase);
     }
 
     std::cout << std::endl << std::endl;

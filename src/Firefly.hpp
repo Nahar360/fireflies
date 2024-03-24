@@ -43,19 +43,13 @@ public:
 
     float GetElapsedTimeAsSeconds() const;
 
-    void SetUrgeToBlink(const float urgeToBlink);
-    float GetUrgeToBlink() const;
-
     void SetPhase(const float phase);
     float GetPhase() const;
 
+    std::vector<float> GetPhasesToPlot() const;
+    int GetPhasesOffset() const;
+
     void ResetBlinking();
-
-    std::vector<float> m_phasesToPlot = std::vector<float>(500);
-    int m_phasesOffset = 0;
-
-    std::vector<float> GetPhasesToPlot() const { return m_phasesToPlot; }
-    int GetPhasesOffset() const { return m_phasesOffset; }
 
 private:
     sf::CircleShape m_firefly;
@@ -79,9 +73,10 @@ private:
     float m_previousTime = 0.0f;
     float m_currentTime = 0.0f;
 
-    float m_urgeToBlink = 0.0f;
-
     float m_phase = 0.0f;
+
+    std::vector<float> m_phasesToPlot = std::vector<float>(500);
+    int m_phasesOffset = 0;
 };
 
 #endif // FIREFLY_HPP
