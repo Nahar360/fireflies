@@ -5,7 +5,6 @@
 #include "GlobalSettings.hpp"
 #include "UiSettings.hpp"
 
-
 CFirefly::CFirefly(int id) : m_id(id), m_closestFirefly(-1)
 {
     m_font.loadFromFile("./src/fonts/arial.ttf");

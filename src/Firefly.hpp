@@ -47,7 +47,6 @@ public:
     std::vector<float> GetPhasesToPlot() const;
     int GetPhasesOffset() const;
 
-
 private:
     sf::CircleShape m_firefly;
     sf::CircleShape m_center;
