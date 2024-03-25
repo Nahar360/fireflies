@@ -18,7 +18,7 @@ extern int SHOW_LINES_OPTION;
 
 extern bool SHOW_INFLUENCE_RADIUS;
 
-extern float BLINKING_DURATION;
+extern float BLINKING_RATE;
 } // namespace UiSettings
 
 #endif // UI_SETTINGS_HPP

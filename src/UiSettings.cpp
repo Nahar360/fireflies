@@ -18,5 +18,5 @@ int SHOW_LINES_OPTION = 0;
 bool SHOW_INFLUENCE_RADIUS = true;
 bool SHOW_VERTICES = false;
 
-float BLINKING_DURATION = 0.1f;
+float BLINKING_RATE = 2.0f;
 } // namespace UiSettings

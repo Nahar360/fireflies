@@ -83,9 +83,7 @@ void CUiManager::HandleUi(sf::RenderWindow& window, CNetwork& network, float fps
 
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Blinking settings");
 
-    UpdateBlinkingDuration(network);
-
-    ResetBlinkingClock(network);
+    UpdateBlinkingRate();
 
     // -------------------------
     ImGui::Separator();
@@ -195,20 +193,9 @@ void CUiManager::UpdateShowInfluenceRadius(CNetwork& network)
     ImGui::Checkbox("Show Influence Radius", &UiSettings::SHOW_INFLUENCE_RADIUS);
 }
 
-void CUiManager::UpdateBlinkingDuration(CNetwork& network)
+void CUiManager::UpdateBlinkingRate()
 {
-    ImGui::InputFloat("Blinking duration (s)", &UiSettings::BLINKING_DURATION, 0.001f, 0.001f, "%.2f");
-}
-
-void CUiManager::ResetBlinkingClock(CNetwork& network)
-{
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.4f, 0.1f, 0.1f, 1.0f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.5f, 0.1f, 0.1f, 1.0f));
-    if (ImGui::Button("Reset blinking"))
-    {
-        network.ResetBlinkingClock();
-    }
-    ImGui::PopStyleColor(2);
+    ImGui::InputFloat("Blinking rate (s)", &UiSettings::BLINKING_RATE, 0.1f, 0.1f, "%.1f");
 }
 
 void CUiManager::CreateFirefly(CNetwork& network)
@@ -260,7 +247,7 @@ void CUiManager::ListFireflies(CNetwork& network)
                 ImVec4(0, 1, 0, 1),
                 "---> [%d] - Blink. rate: %0.1f s. Closest: [%d].",
                 firefly.GetId(),
-                firefly.GetBlinkingRate(),
+                UiSettings::BLINKING_RATE,
                 firefly.GetClosestFirefly());
 
             ImGui::SameLine();
@@ -288,7 +275,7 @@ void CUiManager::ListFireflies(CNetwork& network)
             ImGui::Text(
                 "[%d] - Blink. rate: %0.1f s. Closest: [%d].",
                 firefly.GetId(),
-                firefly.GetBlinkingRate(),
+                UiSettings::BLINKING_RATE,
                 firefly.GetClosestFirefly());
 
             ImGui::SameLine();
@@ -314,7 +301,7 @@ void CUiManager::ListFireflies(CNetwork& network)
 
         // Phase real time plot
         char overlay[32];
-        // sprintf_s(overlay, "phase %0.1f", firefly.GetPhase()); // // TODO: sprintf_s does not work on MacOS
+        // sprintf_s(overlay, "phase %0.1f", firefly.GetPhase()); // TODO: sprintf_s does not work on MacOS
         ImGui::PlotLines(
             "",
             firefly.GetPhasesToPlot().data(),
@@ -322,7 +309,7 @@ void CUiManager::ListFireflies(CNetwork& network)
             firefly.GetPhasesOffset(),
             overlay,
             0.0f,
-            firefly.GetBlinkingRate(),
+            UiSettings::BLINKING_RATE,
             ImVec2(250.0f, 50.0f));
 
         ImGui::Separator();

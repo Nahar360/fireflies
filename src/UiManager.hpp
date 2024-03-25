@@ -35,8 +35,7 @@ private:
     void UpdateFirefliesColor(CNetwork& network);
     void UpdateShowLines(CNetwork& network);
     void UpdateShowInfluenceRadius(CNetwork& network);
-    void UpdateBlinkingDuration(CNetwork& network);
-    void ResetBlinkingClock(CNetwork& network);
+    void UpdateBlinkingRate();
     void CreateFirefly(CNetwork& network);
     void DeleteFirefly(CNetwork& network);
     void ClearFireflies(CNetwork& network);

@@ -2,8 +2,6 @@
 
 namespace GlobalSettings
 {
-char ROOT_PATH[255] = "./Firefly-Synchronization/";
-
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
@@ -11,4 +9,6 @@ char WINDOW_TITLE[255] = "Firefly Synchronization";
 
 sf::Color BACKGROUND_COLOR = {105, 105, 105};
 float BACKGROUND_COLOR_INPUT[3] = {0.41f, 0.41f, 0.41f};
+
+float BLINKING_DURATION = 0.1f;
 } // namespace GlobalSettings

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "GlobalSettings.hpp"
 #include "UiSettings.hpp"
 
 void CNetwork::Init()
@@ -13,13 +14,6 @@ void CNetwork::Init()
     {
         CFirefly firefly(i + 1);
         firefly.Init();
-
-        const float blinkingRate =
-            UiSettings::MIN_BLINKING_RATE +
-            static_cast<float>(rand()) /
-                (static_cast<float>(
-                    RAND_MAX / (UiSettings::MAX_BLINKING_RATE - UiSettings::MIN_BLINKING_RATE))); // 2.2f
-        firefly.SetBlinkingRate(blinkingRate);
 
         m_fireflies.push_back(firefly);
     }
@@ -59,7 +53,7 @@ void CNetwork::TransmitPulse(CFirefly& firefly)
 
         float phase = neighbour.GetPhase();
 
-        const float bDissipationFactor = UiSettings::BLINKING_DURATION;
+        const float bDissipationFactor = GlobalSettings::BLINKING_DURATION;
         const float eAmplitudeIncrement = 0.1f;
         const float alpha = exp(bDissipationFactor * eAmplitudeIncrement);
         const float beta = (exp(bDissipationFactor * eAmplitudeIncrement) - 1) / (exp(bDissipationFactor) - 1);
@@ -174,24 +168,10 @@ void CNetwork::UpdateFirefliesColor(sf::Color color)
     }
 }
 
-void CNetwork::ResetBlinkingClock()
-{
-    for (size_t i = 0; i < m_fireflies.size(); i++)
-    {
-        m_fireflies[i].ResetBlinking();
-    }
-}
-
 void CNetwork::CreateFirefly()
 {
     CFirefly firefly(m_fireflies.size() + 1);
     firefly.Init(75.0f, 75.0f); // default position, top left corner
-
-    float blinkingRate =
-        UiSettings::MIN_BLINKING_RATE +
-        static_cast<float>(rand()) /
-            (static_cast<float>(RAND_MAX / (UiSettings::MAX_BLINKING_RATE - UiSettings::MIN_BLINKING_RATE))); // 1.0f
-    firefly.SetBlinkingRate(blinkingRate);
 
     m_fireflies.push_back(firefly);
 }

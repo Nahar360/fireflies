@@ -15,7 +15,7 @@ public:
     void RunPhaseFunction();
     bool HasBlinked();
     void UpdatePosition(float x, float y);
-    void UpdateRotation();
+    // void UpdateRotation();
     void UpdateColor(sf::Color color);
     bool MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mousePos);
 
@@ -29,27 +29,24 @@ public:
 
     float GetInfluenceRadius() const;
 
-    void SetClosestFirefly(const int closestFirefly);
+    void SetClosestFirefly(int closestFirefly);
     int GetClosestFirefly() const;
 
     void SetNeighbours(const std::vector<int>& neighbours);
     std::vector<int> GetNeighbours() const;
 
-    void SetSelected(const bool selected);
+    void SetSelected(bool selected);
     bool GetSelected() const;
-
-    void SetBlinkingRate(const float blinkingRate);
-    float GetBlinkingRate() const;
 
     float GetElapsedTimeAsSeconds() const;
 
-    void SetPhase(const float phase);
+    void SetPhase(float phase);
     float GetPhase() const;
+    void ResetPhase();
 
     std::vector<float> GetPhasesToPlot() const;
     int GetPhasesOffset() const;
 
-    void ResetBlinking();
 
 private:
     sf::CircleShape m_firefly;
@@ -62,7 +59,6 @@ private:
     int m_id;
 
     sf::Color m_originalColor;
-    float m_blinkingRate = 2.0f;
 
     int m_closestFirefly = -1;
     std::vector<int> m_neighbours;

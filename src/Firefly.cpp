@@ -1,7 +1,10 @@
 #include "Firefly.hpp"
 
+#include <iostream>
+
 #include "GlobalSettings.hpp"
 #include "UiSettings.hpp"
+
 
 CFirefly::CFirefly(int id) : m_id(id), m_closestFirefly(-1)
 {
@@ -136,7 +139,7 @@ void CFirefly::Draw(sf::RenderWindow& window)
 
 void CFirefly::RunPhaseFunction()
 {
-    float currentTime = m_clock.getElapsedTime().asSeconds();
+    const float currentTime = m_clock.getElapsedTime().asSeconds();
     m_phase += currentTime - m_previousTime;
     m_previousTime = currentTime;
 
@@ -146,7 +149,7 @@ void CFirefly::RunPhaseFunction()
 
 bool CFirefly::HasBlinked()
 {
-    if (m_phase > m_blinkingRate)
+    if (m_phase > UiSettings::BLINKING_RATE)
     {
         // Blink
         m_firefly.setFillColor(sf::Color::Yellow);
@@ -154,7 +157,7 @@ bool CFirefly::HasBlinked()
         m_center.setFillColor(sf::Color::Black);
 
         // Back to original color
-        if (m_phase > m_blinkingRate + UiSettings::BLINKING_DURATION)
+        if (m_phase > UiSettings::BLINKING_RATE + GlobalSettings::BLINKING_DURATION)
         {
             m_firefly.setFillColor(m_originalColor);
             const sf::Color decoColor = sf::Color(
@@ -165,7 +168,7 @@ bool CFirefly::HasBlinked()
             m_center.setFillColor(decoColor);
 
             m_phase = 0.0f;
-            
+
             // m_clock.restart();
 
             // TODO:
@@ -196,6 +199,7 @@ void CFirefly::UpdatePosition(float x, float y)
     }
 }
 
+/*
 void CFirefly::UpdateRotation()
 {
     m_firefly.rotate(0.2f);
@@ -205,6 +209,7 @@ void CFirefly::UpdateRotation()
         m_vertices[i].rotate(0.2f);
     }
 }
+*/
 
 void CFirefly::UpdateColor(sf::Color color)
 {
@@ -242,7 +247,7 @@ bool CFirefly::MouseDetection(sf::Mouse::Button mouseButton, sf::Vector2i mouseP
         }
         case sf::Mouse::Button::Right:
         {
-            UpdateRotation();
+            ResetPhase();
 
             return true;
         }
@@ -279,7 +284,7 @@ float CFirefly::GetInfluenceRadius() const
     return m_influenceRadius.getRadius();
 }
 
-void CFirefly::SetClosestFirefly(const int closestFirefly)
+void CFirefly::SetClosestFirefly(int closestFirefly)
 {
     m_closestFirefly = closestFirefly;
 }
@@ -299,7 +304,7 @@ std::vector<int> CFirefly::GetNeighbours() const
     return m_neighbours;
 }
 
-void CFirefly::SetSelected(const bool selected)
+void CFirefly::SetSelected(bool selected)
 {
     m_selected = selected;
 }
@@ -309,24 +314,12 @@ bool CFirefly::GetSelected() const
     return m_selected;
 }
 
-void CFirefly::SetBlinkingRate(const float blinkingRate)
-{
-    m_blinkingRate = blinkingRate;
-
-    m_clock.restart();
-}
-
-float CFirefly::GetBlinkingRate() const
-{
-    return m_blinkingRate;
-}
-
 float CFirefly::GetElapsedTimeAsSeconds() const
 {
     return m_clock.getElapsedTime().asSeconds();
 }
 
-void CFirefly::SetPhase(const float phase)
+void CFirefly::SetPhase(float phase)
 {
     m_phase = phase;
 }
@@ -334,6 +327,14 @@ void CFirefly::SetPhase(const float phase)
 float CFirefly::GetPhase() const
 {
     return m_phase;
+}
+
+void CFirefly::ResetPhase()
+{
+    // TODO: bug, this line gets printed too many times with only 1 click
+    std::cout << "Reset blinking of firefly: " << m_id << std::endl;
+
+    m_phase = 0.0f;
 }
 
 std::vector<float> CFirefly::GetPhasesToPlot() const
@@ -344,9 +345,4 @@ std::vector<float> CFirefly::GetPhasesToPlot() const
 int CFirefly::GetPhasesOffset() const
 {
     return m_phasesOffset;
-}
-
-void CFirefly::ResetBlinking()
-{
-    m_clock.restart();
 }

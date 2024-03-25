@@ -19,8 +19,6 @@ public:
 
     void UpdateFirefliesColor(sf::Color color);
 
-    void ResetBlinkingClock();
-
     void CreateFirefly();
     void DeleteFirefly();
     void ClearFireflies();
