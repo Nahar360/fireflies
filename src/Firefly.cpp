@@ -330,8 +330,7 @@ float CFirefly::GetPhase() const
 
 void CFirefly::ResetPhase()
 {
-    // TODO: bug, this line gets printed too many times with only 1 click
-    std::cout << "Reset blinking of firefly: " << m_id << std::endl;
+    std::cout << "Reset phase/blinking of firefly: " << m_id << std::endl;
 
     m_phase = 0.0f;
 }
