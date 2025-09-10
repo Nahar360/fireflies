@@ -28,7 +28,7 @@ Paper: [Article: Firefly Synchronization in Ad Hoc Networks](https://www.rlocman
 
 # TODO
 
-- Mainly, fireflies synchronisation still not working as expected.
+- Mainly, fireflies synchronisation still not working as expected. I should continue working on this whenever I can.
 
 # Building and running
 
